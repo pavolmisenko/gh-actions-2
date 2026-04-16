@@ -5,5 +5,5 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
       - name: "Get event information"
-        run: echo "Event name: ${{ github.event_name }}" |
-        run: echo "Event data: ${{ github.event }}"
+        run: echo "Event name ${{ github.event_name }}" |
+          echo "Event data ${{ github.event }}"

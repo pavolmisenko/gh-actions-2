@@ -1,0 +1,28 @@
+name: "Test and Deploy"
+on: "push"
+jobs:
+  test:
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: "actions/checkout@v3"
+      - name: "Install Dependencies"
+        run: npm install
+      - name: "Run Tests"
+        run: npm run test
+  lint:
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v3
+      - name: "Intall Dependencies"
+        run: npm install
+      - name: "Run Lint"
+        run: npm run lint
+  deploy:
+    needs: [test, lint]
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: "actions/checkout@v3"
+      - name: "Install Dependencies"
+        run: npm install
+      - name: "Deploy to Production"
+        run: echo "deploying to production..."

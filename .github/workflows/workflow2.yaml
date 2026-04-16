@@ -1,0 +1,9 @@
+name: "Issues information"
+on: issues
+jobs:
+  event_info:
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Get event information"
+        run: echo "Event name: ${{ github.event_name }}" |
+        run: echo "Event data: ${{ github.event }}"

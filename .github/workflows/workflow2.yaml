@@ -6,4 +6,4 @@ jobs:
     steps:
       - name: "Get event information"
         run: echo "Event name ${{ github.event_name }}" |
-          echo "Event data ${{ github.event }}"
+          echo "Event data ${{ toJSON(github.event) }}"

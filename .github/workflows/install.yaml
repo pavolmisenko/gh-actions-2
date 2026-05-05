@@ -4,8 +4,7 @@ on:
     outputs:
       operating-system:
         description: "The operating system used in the install job"
-        required: true
-        type: string
+        value: ${{ jobs.install.outputs.operating-system }}
 
 jobs:
   install:
@@ -22,7 +21,7 @@ jobs:
       - name: "Cache Node Modules"
         uses: actions/cache@v3
         with:
-          path: npm_modules
+          path: node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       - name: "Output Operating System"
         id: os

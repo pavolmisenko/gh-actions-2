@@ -28,7 +28,7 @@ jobs:
       - name: "Run Lint"
         run: npm run lint
   deploy:
-    needs: [test, lint]
+    needs: [test, lint, install]
     runs-on: ${{ needs.install.outputs.operating-system }}
     steps:
       - uses: "actions/checkout@v3"

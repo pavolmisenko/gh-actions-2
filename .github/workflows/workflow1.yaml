@@ -16,6 +16,7 @@ jobs:
           path: npm_modules
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
   test:
+    needs: install
     runs-on: ${{ matrix.operating-system }}
     steps:
       - uses: "actions/checkout@v3"
@@ -27,6 +28,7 @@ jobs:
       - name: "Run Tests"
         run: npm run test
   lint:
+    needs: install
     runs-on: ${{ matrix.operating-system }}
     steps:
       - uses: actions/checkout@v3

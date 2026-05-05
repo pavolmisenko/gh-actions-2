@@ -11,7 +11,7 @@ jobs:
       - name: "Install Dependencies from Cache"
         uses: actions/cache@v3
         with:
-          path: npm_modules
+          path: node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       - name: "Run Tests"
         run: npm run test
@@ -23,7 +23,7 @@ jobs:
       - name: "Install Dependencies from Cache"
         uses: actions/cache@v3
         with:
-          path: npm_modules
+          path: node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       - name: "Run Lint"
         run: npm run lint
@@ -35,7 +35,7 @@ jobs:
       - name: "Install Dependencies from Cache"
         uses: actions/cache@v3
         with:
-          path: npm_modules
+          path: node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       - name: "Deploy to Production"
         run: echo "deploying to production..."

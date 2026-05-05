@@ -1,20 +1,43 @@
 name: "Test and Deploy"
 on: "push"
 jobs:
-  test:
-    runs-on: "ubuntu-latest"
+  strategy:
+    matrix:
+      operating-system: [ubuntu-latest, macos-latest]
+      - exclude:
+          node-version: 14
+          operating-system: macos-latest
+  install:
+    runs-on: ${{ matrix.operating-system }}
     steps:
       - uses: "actions/checkout@v3"
       - name: "Install Dependencies"
         run: npm install
+      - name: "Cache Node Modules"
+        uses: actions/cache@v3
+        with:
+          path: npm_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+  test:
+    runs-on: ${{ matrix.operating-system }}
+    steps:
+      - uses: "actions/checkout@v3"
+      - name: "Install Dependencies from Cache"
+        uses: actions/cache@v3
+        with:
+          path: npm_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       - name: "Run Tests"
         run: npm run test
   lint:
-    runs-on: "ubuntu-latest"
+    runs-on: ${{ matrix.operating-system }}
     steps:
       - uses: actions/checkout@v3
-      - name: "Intall Dependencies"
-        run: npm install
+      - name: "Install Dependencies from Cache"
+        uses: actions/cache@v3
+        with:
+          path: npm_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       - name: "Run Lint"
         run: npm run lint
   deploy:
@@ -22,7 +45,10 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
       - uses: "actions/checkout@v3"
-      - name: "Install Dependencies"
-        run: npm install
+      - name: "Install Dependencies from Cache"
+        uses: actions/cache@v3
+        with:
+          path: npm_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       - name: "Deploy to Production"
         run: echo "deploying to production..."

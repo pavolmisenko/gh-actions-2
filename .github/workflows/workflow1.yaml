@@ -5,9 +5,6 @@ jobs:
     strategy:
       matrix:
         operating-system: [ubuntu-latest, macos-latest]
-        - exclude:
-            node-version: 14
-            operating-system: macos-latest
     runs-on: ${{ matrix.operating-system }}
     steps:
       - uses: "actions/checkout@v3"

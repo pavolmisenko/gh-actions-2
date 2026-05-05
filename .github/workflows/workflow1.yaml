@@ -2,19 +2,7 @@ name: "Test and Deploy"
 on: "push"
 jobs:
   install:
-    strategy:
-      matrix:
-        operating-system: [ubuntu-latest, macos-latest]
-    runs-on: ${{ matrix.operating-system }}
-    steps:
-      - uses: "actions/checkout@v3"
-      - name: "Install Dependencies"
-        run: npm install
-      - name: "Cache Node Modules"
-        uses: actions/cache@v3
-        with:
-          path: npm_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+    uses: ./.github/workflows/install.yaml
   test:
     needs: install
     runs-on: ${{ needs.install.outputs.operating-system }}

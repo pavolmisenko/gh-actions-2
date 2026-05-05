@@ -1,0 +1,35 @@
+name: "Install dependencies"
+on:
+  workflow_call:
+    outputs:
+      operating-system:
+        description: "The operating system used in the install job"
+        required: true
+        type: string
+
+jobs:
+  install:
+    strategy:
+      matrix:
+        operating-system: [ubuntu-latest, macos-latest]
+    outputs:
+      operating-system: ${{ steps.os.outputs.operating-system }}
+    runs-on: ${{ matrix.operating-system }}
+    steps:
+      - uses: "actions/checkout@v3"
+      - name: "Install Dependencies"
+        run: npm install
+      - name: "Cache Node Modules"
+        uses: actions/cache@v3
+        with:
+          path: npm_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+      - name: "Output Operating System"
+        id: os
+        run: echo "operating-system=${{ matrix.operating-system }}" >> $GITHUB_OUTPUT
+  check:
+    needs: install
+    runs-on: ${{ needs.install.outputs.operating-system }}
+    steps:
+      - name: "Check Operating System"
+        run: echo "Operating System= ${{ needs.install.outputs.operating-system }}"
